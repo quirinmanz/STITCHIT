@@ -18,6 +18,7 @@ void BinSelection::computeMeanSignal(std::string& chrom, const std::vector<std::
 	//Iterating through all files in the specified directory
 	if (boost::filesystem::is_directory(path_)){
 		for(auto& entry : boost::make_iterator_range(boost::filesystem::directory_iterator(path_), {})){
+            if (expressionMap_.count(entry.path().stem().string()) != 0){
 			double *stats = NULL;
 			bigWigFile_t *fp = NULL;
 			std::string filenameS = entry.path().string();
@@ -49,7 +50,7 @@ void BinSelection::computeMeanSignal(std::string& chrom, const std::vector<std::
 				meanSignal_.push_back(currentSample);
 			}
 			counter += 1;
-		}
+		}}
 	}
 	bwCleanup();
 }
@@ -62,6 +63,7 @@ void BinSelection::computeMeanSignal(std::string& chrom, const std::vector<std::
 	//Iterating through all files in the specified directory
 	if (boost::filesystem::is_directory(path_)){
 		for(auto& entry : boost::make_iterator_range(boost::filesystem::directory_iterator(path_), {})){
+            if (expressionMap_.count(entry.path().stem().string()) != 0){
 			double *stats = NULL;
 			bigWigFile_t *fp = NULL;
 			std::string filenameS = entry.path().string();
@@ -91,7 +93,7 @@ void BinSelection::computeMeanSignal(std::string& chrom, const std::vector<std::
 			bwClose(fp);
 			meanSignal_.push_back(currentSample);
 		}
-	}
+	}}
 	bwCleanup();
 }
 
@@ -103,6 +105,7 @@ void BinSelection::computeMeanSignal(const std::vector<std::tuple<std::string, u
 	//Iterating through all files in the specified directory
 	if (boost::filesystem::is_directory(path_)){
 		for(auto& entry : boost::make_iterator_range(boost::filesystem::directory_iterator(path_), {})){
+            if (expressionMap_.count(entry.path().stem().string()) != 0){
 			double *stats = NULL;
 			bigWigFile_t *fp = NULL;
 			std::string filenameS = entry.path().string();
@@ -134,7 +137,7 @@ void BinSelection::computeMeanSignal(const std::vector<std::tuple<std::string, u
 				meanSignal_.push_back(currentSample);
 				}
 			counter+=1;
-		}
+		}}
 	}
 	bwCleanup();
 }
@@ -149,6 +152,7 @@ void BinSelection::computeMeanSignal(const std::vector<std::tuple<std::string, u
 	//Iterating through all files in the specified directory
 	if (boost::filesystem::is_directory(path_)){
 		for(auto& entry : boost::make_iterator_range(boost::filesystem::directory_iterator(path_), {})){
+            if (expressionMap_.count(entry.path().stem().string()) != 0){
 			double *stats = NULL;
 			bigWigFile_t *fp = NULL;
 			std::string filenameS = entry.path().string();
@@ -177,7 +181,7 @@ void BinSelection::computeMeanSignal(const std::vector<std::tuple<std::string, u
 			free(stats);
 			bwClose(fp);
 			meanSignal_.push_back(currentSample);
-		}
+		}}
 	}
 	bwCleanup();
 }

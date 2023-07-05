@@ -75,6 +75,7 @@ void SPANInputGenerator::generateSPANInput(const std::tuple<std::string, unsigne
           //Iterating through all files in the specified directory
           if (boost::filesystem::is_directory(path_)){
                     for(auto& entry : boost::make_iterator_range(boost::filesystem::directory_iterator(path_), {})){
+                        if (expressionMap_.count(entry.path().stem().string()) != 0){
                               bigWigFile_t *fp = NULL;
                               bwOverlappingIntervals_t *intervals = NULL;
                               std::string filenameS = entry.path().string();
@@ -92,7 +93,7 @@ void SPANInputGenerator::generateSPANInput(const std::tuple<std::string, unsigne
                     	                    //Openning bw file and printing data
                          		               fp = bwOpen(filename, NULL, "r");
                                    	     if(!fp) throw std::invalid_argument("The bigwig file "+filenameS+" could not be opened.");
-                                        	
+
 	                                        char * chromosome_c_str = new char[std::get<0>(genomicCoordinates).size() + 1];
      	                                   std::copy(std::get<0>(genomicCoordinates).begin(), std::get<0>(genomicCoordinates).end(), chromosome_c_str);
           	                              chromosome_c_str[std::get<0>(genomicCoordinates).size()] = '\0'; // don't forget the terminating 0
@@ -109,7 +110,7 @@ void SPANInputGenerator::generateSPANInput(const std::tuple<std::string, unsigne
                          	     }
 						}
 						counter += 1;
-                    }
+                    }}
           }else{
                     throw std::invalid_argument("You did not specifiy a directory containing bigwig files.");
           }
@@ -128,6 +129,7 @@ void SPANInputGenerator::generateSPANInput(const std::tuple<std::string, unsigne
           //Iterating through all files in the specified directory
           if (boost::filesystem::is_directory(path_)){
                     for(auto& entry : boost::make_iterator_range(boost::filesystem::directory_iterator(path_), {})){
+                        if (expressionMap_.count(entry.path().stem().string()) != 0){
                               bigWigFile_t *fp = NULL;
                               bwOverlappingIntervals_t *intervals = NULL;
                               std::string filenameS = entry.path().string();
@@ -159,7 +161,7 @@ void SPANInputGenerator::generateSPANInput(const std::tuple<std::string, unsigne
                               }else{
                                         throw std::invalid_argument("No expression information available for "+filenameS);
                               }
-                    }
+                    }}
           }else{
                     throw std::invalid_argument("You did not specifiy a directory containing bigwig files.");
           }
