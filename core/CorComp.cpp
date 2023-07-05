@@ -5,6 +5,7 @@
 #include <map>
 #include <limits>	
 #include <iostream>
+#include <boost/math/distributions/students_t.hpp>
 
 CorComp::CorComp(std::vector<double> v1, std::vector<double> v2)
 	:v1_(v1),v2_(v2)
@@ -138,7 +139,6 @@ std::vector<double> CorComp::getRanksV2(){
 
 std::pair<double, double> CorComp::getFisherZ(double cor){
 	double error;
-	double cor2 = std::abs(cor);
 	if (observationCount_ < 5)
 		error=1.0;
 	else
@@ -146,26 +146,14 @@ std::pair<double, double> CorComp::getFisherZ(double cor){
 	if (std::abs(cor)==1.0)
 		return std::make_pair(std::numeric_limits<double>::max(),error);
 	else
-		return std::make_pair((0.5)*log((1.0+cor2)/(1.0-cor2)),error);
+		return std::make_pair((0.5)*log((1.0+cor)/(1.0-cor)),error);
 }
 
 double CorComp::cdf(double x){
-	if (x > 4.0)
-		return 1.0;
-	else{
-	double sum=x;
-	long double value=x;
-	unsigned long long int df = 1;
-	for (unsigned int i = 1; i< 16; i++){
-		value=value*x*x;
-		df=df*(2*i+1);
-		sum=sum+(value/df);
-	}
-	return 0.5+(1.0/sqrt(2.0*PI))*exp((-1*x*x)/2.0)*sum;
-	}
+    return std::erfc(-x / std::sqrt(2)) / 2;
 }
 
 double CorComp::getPvalue(double cor){
 	std::pair<double,double> fisher = getFisherZ(cor);
-	return 1.0-cdf(fisher.first/fisher.second);
+    return 2 * (1.0 - cdf(std::abs(fisher.first/fisher.second)));
 }
