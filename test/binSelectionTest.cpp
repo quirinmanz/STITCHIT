@@ -155,13 +155,13 @@ TEST_F(BINSELECTIONTest,correlationTest){
 
 	std::vector<std::pair<double, double> > zS = bs.computePearsonCorrelation();
 	ASSERT_NEAR(zS[0].first, 0.298, 0.01);
-	ASSERT_NEAR(zS[0].second, 0.3792987, 0.01);
+	ASSERT_NEAR(zS[0].second, 0.7585973, 0.01);
 	
 	ASSERT_NEAR(zS[1].first, 0.3596, 0.01);
-	ASSERT_NEAR(zS[1].second, 0.3533, 0.01);
+	ASSERT_NEAR(zS[1].second, 0.7065999, 0.01);
 	
 	ASSERT_NEAR(zS[2].first,0.3916,0.01);
-	ASSERT_NEAR(zS[2].second,0.3402,0.01);
+    ASSERT_NEAR(zS[2].second,0.6791023,0.01);
 }
 
 

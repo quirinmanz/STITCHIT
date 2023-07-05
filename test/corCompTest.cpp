@@ -310,7 +310,7 @@ TEST_F(CORCOMPTest, cdf10){
 TEST_F(CORCOMPTest, pValueTest1){
 	CorComp cc (v6,v1);
 	double cor = cc.computePearsonCorrelation();
-	ASSERT_NEAR(cc.getPvalue(cor),0.01866973,0.01);
+	ASSERT_NEAR(cc.getPvalue(cor),0.03738607,0.01);
 }
 
 TEST_F(CORCOMPTest, pValueTest2){
@@ -322,5 +322,16 @@ TEST_F(CORCOMPTest, pValueTest2){
 TEST_F(CORCOMPTest, pValueTest3){
 	CorComp cc (v9,v10);
 	double cor = cc.computeSpearmanCorrelation();
-	ASSERT_NEAR(cc.getPvalue(cor),0.03815232,0.01);
+	ASSERT_NEAR(cc.getPvalue(cor),0.0723965,0.01);
+}
+
+TEST_F(CORCOMPTest, spearmanVsRankedPearsonTest){
+    CorComp cc (v9,v10);
+    double corP = cc.computeSpearmanCorrelation();
+    std::vector<double> r1 = cc.getRanksV1();
+    std::vector<double> r2 = cc.getRanksV2();
+    CorComp cc2 (r1, r2);
+    double corS = cc2.computePearsonCorrelation();
+    ASSERT_EQ(corP, corS);
+    ASSERT_NEAR(cc.getPvalue(corP), cc2.getPvalue(corS),0.01);
 }
